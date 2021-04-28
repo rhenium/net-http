@@ -145,6 +145,7 @@ class TestNetHTTPS < Test::Unit::TestCase
     # See https://github.com/openssl/openssl/pull/5967 for details.
     skip if OpenSSL::OPENSSL_LIBRARY_VERSION =~ /OpenSSL 1.1.0h/
 
+    p Addrinfo.tcp("localhost", 0).ip_address
     http = Net::HTTP.new("localhost", config("port"))
     http.use_ssl = true
     http.cert_store = TEST_STORE
