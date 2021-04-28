@@ -139,6 +139,8 @@ class TestNetHTTPS < Test::Unit::TestCase
   end
 
   def test_session_reuse
+    p [OpenSSL::OPENSSL_VERSION, OpenSSL::OPENSSL_LIBRARY_VERSION]
+    OpenSSL.debug=true
     # FIXME: The new_session_cb is known broken for clients in OpenSSL 1.1.0h.
     # See https://github.com/openssl/openssl/pull/5967 for details.
     skip if OpenSSL::OPENSSL_LIBRARY_VERSION =~ /OpenSSL 1.1.0h/
@@ -157,10 +159,12 @@ class TestNetHTTPS < Test::Unit::TestCase
 
     http.start
     http.get("/")
+    puts http.instance_variable_get(:@socket).io.session.to_text
     http.finish
 
     http.start
     http.get("/")
+    puts http.instance_variable_get(:@socket).io.session.to_text
 
     socket = http.instance_variable_get(:@socket).io
     assert_equal true, socket.session_reused?
@@ -168,6 +172,8 @@ class TestNetHTTPS < Test::Unit::TestCase
     http.finish
   rescue SystemCallError
     skip $!
+  ensure
+    OpenSSL.debug=false
   end
 
   def test_session_reuse_but_expire
