@@ -6,9 +6,15 @@ jobs:
   build:
     name: build (${{ matrix.ruby }} / ${{ matrix.os }})
     strategy:
+      fail-fast: false
       matrix:
+        os: [ ubuntu-20.04, macos-10.15, windows-2019 ]
         ruby: [ '3.0', 2.7, 2.6, head ]
-        os: [ ubuntu-latest, macos-latest ]
+        include:
+          - { os: windows-2019 , ruby: mingw }
+          - { os: windows-2019 , ruby: mswin }
+        exclude:
+          - { os: windows-2019 , ruby: head }
     runs-on: ${{ matrix.os }}
     steps:
     - uses: actions/checkout@v2
