@@ -23,7 +23,7 @@ class TestNetHTTPS < Test::Unit::TestCase
   TEST_STORE = OpenSSL::X509::Store.new.tap {|s| s.add_cert(CA_CERT) }
 
   CONFIG = {
-    'host' => '::1',
+    'host' => '127.0.0.1',
     'proxy_host' => nil,
     'proxy_port' => nil,
     'ssl_enable' => true,
