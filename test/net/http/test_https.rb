@@ -141,7 +141,6 @@ class TestNetHTTPS < Test::Unit::TestCase
   def test_session_reuse
     p [OpenSSL::OPENSSL_VERSION, OpenSSL::OPENSSL_LIBRARY_VERSION]
     OpenSSL.debug=true
-    GC.stress=true
     # FIXME: The new_session_cb is known broken for clients in OpenSSL 1.1.0h.
     # See https://github.com/openssl/openssl/pull/5967 for details.
     skip if OpenSSL::OPENSSL_LIBRARY_VERSION =~ /OpenSSL 1.1.0h/
@@ -176,7 +175,6 @@ class TestNetHTTPS < Test::Unit::TestCase
     skip $!
   ensure
     OpenSSL.debug=false
-    GC.stress=false
   end
 
   def test_session_reuse_but_expire
