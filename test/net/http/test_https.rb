@@ -169,9 +169,10 @@ class TestNetHTTPS < Test::Unit::TestCase
 
     http.start
     p [:sg,Time.now]
-    socket = http.instance_variable_get(:@socket).io
     puts http.instance_variable_get(:@socket).io.session.to_text
     http.get("/")
+
+    socket = http.instance_variable_get(:@socket).io
     puts http.instance_variable_get(:@socket).io.session.to_text
     p [:e,Time.now]
 
