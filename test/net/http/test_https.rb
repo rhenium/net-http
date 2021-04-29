@@ -139,6 +139,7 @@ class TestNetHTTPS < Test::Unit::TestCase
   end
 
   def test_session_reuse
+    p [:b,Time.now]
     p [OpenSSL::OPENSSL_VERSION, OpenSSL::OPENSSL_LIBRARY_VERSION]
     OpenSSL.debug=true
     # FIXME: The new_session_cb is known broken for clients in OpenSSL 1.1.0h.
@@ -147,7 +148,7 @@ class TestNetHTTPS < Test::Unit::TestCase
 
     p Addrinfo.tcp("localhost", 0).ip_address
     http = Net::HTTP.new("localhost", config("port"))
-    http.ipaddr = "127.0.0.1"
+    #http.ipaddr = "127.0.0.1"
     http.use_ssl = true
     http.cert_store = TEST_STORE
 
@@ -159,16 +160,21 @@ class TestNetHTTPS < Test::Unit::TestCase
       http.ssl_version = :TLSv1
     end
 
+    p [:fs,Time.now]
     http.start
+    p [:fg,Time.now]
     http.get("/")
     puts http.instance_variable_get(:@socket).io.session.to_text
     http.finish
+    p [:sb,Time.now]
 
     http.start
+    p [:sg,Time.now]
     socket = http.instance_variable_get(:@socket).io
     puts http.instance_variable_get(:@socket).io.session.to_text
     http.get("/")
     puts http.instance_variable_get(:@socket).io.session.to_text
+    p [:e,Time.now]
 
     assert_equal true, socket.session_reused?
 
