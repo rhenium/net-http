@@ -164,10 +164,11 @@ class TestNetHTTPS < Test::Unit::TestCase
     http.finish
 
     http.start
+    socket = http.instance_variable_get(:@socket).io
+    puts http.instance_variable_get(:@socket).io.session.to_text
     http.get("/")
     puts http.instance_variable_get(:@socket).io.session.to_text
 
-    socket = http.instance_variable_get(:@socket).io
     assert_equal true, socket.session_reused?
 
     http.finish
