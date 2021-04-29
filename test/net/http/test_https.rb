@@ -148,7 +148,7 @@ class TestNetHTTPS < Test::Unit::TestCase
 
     p Addrinfo.tcp("localhost", 0).ip_address
     http = Net::HTTP.new("localhost", config("port"))
-    #http.ipaddr = "127.0.0.1"
+    http.ipaddr = "127.0.0.1"
     http.use_ssl = true
     http.cert_store = TEST_STORE
 
